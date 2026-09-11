@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign In · Age of Pixel</title>
+<link rel="stylesheet" href="assets/css/auth.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="auth-card">
+  <div class="auth-brand">
+    <img class="crest" src="assets/img/crest.png" alt="Age of Pixel crest">
+    <div><h1 class="wordmark-text">Age of Pixel</h1></div>
+  </div>
+
+  <h2>Sign In</h2>
+  <p class="auth-sub">Return to your kingdom.</p>
+
+  <div class="alert success" id="registeredNotice" hidden>Account created! Sign in below.</div>
+  <div class="alert" id="formErrors" hidden></div>
+
+  <form id="loginForm" novalidate>
+    <div class="field">
+      <label for="identifier">Username or Email</label>
+      <input type="text" id="identifier" name="identifier" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+    </div>
+    <button class="btn-primary" type="submit">Enter the Kingdom</button>
+  </form>
+
+  <p class="auth-foot">New to Age of Pixel? <a href="register.html">Create an account</a></p>
+</div>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>
+  if (new URLSearchParams(location.search).get('registered')) {
+    document.querySelector('#registeredNotice').hidden = false;
+  }
+</script>
+</body>
+</html>

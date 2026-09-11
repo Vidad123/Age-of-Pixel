@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Age of Pixel</title>
+<script src="assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const session = await getSession();
+    window.location.replace(session.authenticated ? 'dashboard.html' : 'login.html');
+  } catch (e) {
+    showFatalError(e.message);
+  }
+});
+</script>
+</head>
+<body>
+<noscript>JavaScript is required. <a href="login.html">Continue to sign in</a>.</noscript>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Main Menu · Age of Pixel</title>
+<link rel="stylesheet" href="assets/css/dashboard.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="menu-screen">
+  <div class="scene">
+    <div class="stars"></div>
+    <div class="glow"></div>
+    <div class="peak p1"></div>
+    <div class="peak p2"></div>
+    <div class="peak p3"></div>
+    <div class="peak p4"></div>
+    <div class="tower"></div>
+    <div class="water"></div>
+    <div class="fade"></div>
+  </div>
+
+  <div class="menu-brand">
+    <img class="crest" src="assets/img/crest.png" alt="Age of Pixel crest">
+    <div><h1 class="wordmark-text">Age of Pixel</h1></div>
+  </div>
+
+  <div class="menu-user">
+    Signed in as<br><b id="username">...</b>
+  </div>
+
+  <nav class="menu-rack">
+    <a class="menu-btn" href="play.html" data-modal="singleplayer">Single Player</a>
+    <span class="menu-btn disabled" aria-disabled="true">Multiplayer<span class="soon">Coming soon</span></span>
+    <span class="menu-btn disabled" aria-disabled="true">Local Match<span class="soon">Coming soon</span></span>
+    <a class="menu-btn" href="options.html" data-modal="options">Options</a>
+    <a class="menu-btn" href="credits.html" data-modal="credits">Credits</a>
+    <a class="menu-btn admin-menu-btn" href="admin/" id="adminMenuBtn" hidden>Admin Editor</a>
+    <div class="menu-quit">
+      <a class="menu-btn" href="#" id="logoutBtn">Log Out</a>
+    </div>
+  </nav>
+
+  <div class="menu-version">v2.0</div>
+</div>
+
+<div class="scroll-backdrop" id="scrollBackdrop" hidden>
+  <div class="scroll-modal" id="scrollModal" role="dialog" aria-modal="true">
+    <div class="scroll-cap scroll-cap-top">
+      <span class="scroll-cord left"></span><span class="scroll-cord right"></span>
+    </div>
+    <span class="scroll-seal">✦</span>
+    <div class="scroll-body">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <button class="scroll-close" id="scrollClose" aria-label="Close">×</button>
+
+      <div class="scroll-page" id="singleplayerPage" hidden>
+        <div class="setup-progress" aria-label="Single player setup progress">
+          <span class="active" data-step-dot="1">1</span><i></i><span data-step-dot="2">2</span>
+        </div>
+
+        <section class="setup-step" id="mapStep">
+        <h2>Choose Map</h2>
+        <p class="auth-sub">Select the battlefield for your skirmish.</p>
+
+        <div class="field">
+          <label>Map</label>
+          <div class="setup-grid" id="mapGrid">
+            <button type="button" class="setup-card" data-map="riverwatch">
+              <span class="setup-icon">🏞</span>
+              <b>Riverwatch Valley</b>
+              <small>Balanced open valley with a winding river.</small>
+            </button>
+            <button type="button" class="setup-card" data-map="emberfall">
+              <span class="setup-icon">⛰</span>
+              <b>Emberfall Pass</b>
+              <small>A tight mountain pass split by twin villages.</small>
+            </button>
+            <button type="button" class="setup-card" data-map="frosthollow">
+              <span class="setup-icon">❄</span>
+              <b>Frosthollow Reach</b>
+              <small>Frozen river crossing guarded by bridges.</small>
+            </button>
+            <button type="button" class="setup-card" data-map="sunscar">
+              <span class="setup-icon">☀</span><b>Sunscar Desert</b><small>Dry basins and exposed desert ridges.</small>
+            </button>
+            <button type="button" class="setup-card" data-map="verdant">
+              <span class="setup-icon">🌿</span><b>Verdant Isles</b><small>Forest islands divided by narrow channels.</small>
+            </button>
+            <button type="button" class="setup-card" data-map="blackwood">
+              <span class="setup-icon">♣</span><b>Blackwood</b><small>Dense woodland with dangerous clearings.</small>
+            </button>
+            <button type="button" class="setup-card" data-map="goldenplains">
+              <span class="setup-icon">🌾</span><b>Golden Plains</b><small>Open ground crossed by long trade roads.</small>
+            </button>
+            <button type="button" class="setup-card" data-map="shatteredcoast">
+              <span class="setup-icon">🌊</span><b>Shattered Coast</b><small>Broken shoreline with coastal choke points.</small>
+            </button>
+            <button type="button" class="setup-card" data-map="moonfen">
+              <span class="setup-icon">☾</span><b>Moonfen Marsh</b><small>Twisting wetlands and hidden approaches.</small>
+            </button>
+            <button type="button" class="setup-card" data-map="ironridge">
+              <span class="setup-icon">◆</span><b>Ironridge</b><small>Fortified highlands and rocky corridors.</small>
+            </button>
+            <button type="button" class="setup-card campaign-map-card" data-map="infinite">
+              <span class="setup-icon">∞</span><b>Infinite Campaign</b><small>An expanding world with endless turns and enemy waves.</small>
+            </button>
+            <button type="button" class="setup-card random-map-card" data-map="random">
+              <span class="setup-icon">🎲</span><b>Random Map</b><small>Choose one of all 10 battlefields at launch.</small>
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="start-btn" id="chooseFeaturesBtn">Choose Features ›</button>
+        </section>
+
+        <section class="setup-step" id="featuresStep" hidden>
+          <h2>Match Features</h2>
+          <p class="auth-sub" id="chosenMapLabel">Riverwatch Valley</p>
+
+          <div class="rule-grid">
+            <label class="select-field">Map size
+              <select id="mapSizeSelect">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+                <option value="extreme">Extreme</option>
+                <option value="biggest">Biggest</option>
+                <option value="infinite">Infinite</option>
+              </select>
+            </label>
+            <label class="select-field">Map visibility
+              <select id="visibilitySelect">
+                <option value="fog">Fog</option>
+                <option value="reveal">Reveal</option>
+                <option value="explore" selected>Explore</option>
+              </select>
+            </label>
+            <label class="select-field">Starting units
+              <select id="unitsSelect">
+                <option value="minimal">Minimal</option>
+                <option value="few" selected>Few</option>
+                <option value="many">Many</option>
+              </select>
+            </label>
+            <label class="select-field">Towns
+              <select id="townsSelect">
+                <option value="few">Few</option>
+                <option value="normal" selected>Normal</option>
+                <option value="many">Many</option>
+              </select>
+            </label>
+            <label class="select-field">Players
+              <select id="playerCountSelect">
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="roster-head"><b>Players</b><small>Name · Control · Color · Team</small></div>
+          <div class="player-roster" id="playerRoster"></div>
+
+          <div class="setup-actions">
+            <button type="button" class="back-btn" id="backToMapsBtn">‹ Map</button>
+            <button type="button" class="start-btn" id="startBattleBtn">Begin Battle</button>
+          </div>
+        </section>
+      </div>
+
+      <div class="scroll-page" id="optionsPage" hidden>
+        <h2>Options</h2>
+        <p class="auth-sub">Signed in as <b id="modalUsername">...</b>.</p>
+        <div class="field">
+          <label>Sound</label>
+          <input type="text" value="On (coming soon)" disabled>
+        </div>
+        <div class="field">
+          <label>Difficulty</label>
+          <input type="text" value="Normal (coming soon)" disabled>
+        </div>
+      </div>
+
+      <div class="scroll-page" id="creditsPage" hidden>
+        <h2>Credits</h2>
+        <p class="auth-sub">Age of Pixel — an original browser-based medieval turn strategy game.</p>
+        <p style="font-size:14px;line-height:1.6">
+          Design &amp; Development — You<br>
+          Engine — Vanilla HTML / CSS / JavaScript<br>
+          Backend — PHP &amp; MySQL (JSON API)<br>
+          Genre inspiration — classic grid tactics &amp; real-time strategy menus
+        </p>
+      </div>
+    </div>
+    <div class="scroll-cap scroll-cap-bottom"></div>
+  </div>
+</div>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>
