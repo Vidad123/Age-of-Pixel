@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2b1b0d"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/img/app-icon-180.png">
+<title>Create Account · Age of Pixel</title>
+<link rel="stylesheet" href="assets/css/auth.css?v=20260913-cleanbg2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="auth-entry">
+<div class="auth-card">
+  <div class="auth-brand">
+    <img class="crest" src="assets/img/crest.png" alt="Age of Pixel crest">
+    <div><h1 class="wordmark-text">Age of Pixel</h1></div>
+  </div>
+
+  <h2>Create Account</h2>
+  <p class="auth-sub">Raise your banner and claim your kingdom.</p>
+
+  <div class="alert" id="formErrors" hidden></div>
+
+  <form id="registerForm" novalidate>
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username" required minlength="3" maxlength="32">
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" autocomplete="email" required>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="new-password" required minlength="8">
+    </div>
+    <div class="field">
+      <label for="confirm_password">Confirm Password</label>
+      <input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password" required minlength="8">
+    </div>
+    <button class="btn-primary" type="submit">Create Account</button>
+  </form>
+
+  <p class="auth-foot">Already have a kingdom? <a href="login.html">Sign in</a></p>
+</div>
+<script src="assets/js/app.js?v=20260913-pwa1"></script>
+<script src="assets/js/auth.js"></script>
+</body>
+</html>

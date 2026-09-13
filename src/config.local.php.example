@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copy this file to config.local.php, then enter the database values shown
+ * in your HostForge control panel. The real config.local.php is protected by
+ * src/.htaccess and should not be shared publicly.
+ */
+return [
+    'db' => [
+        'host' => 'localhost',
+        'port' => 3306,
+        'name' => 'hostforge_account_database',
+        'user' => 'hostforge_account_user',
+        'pass' => 'replace_with_database_password',
+        'charset' => 'utf8mb4',
+    ],
+    'app' => [
+        'admin_users' => 'admin',
+    ],
+];

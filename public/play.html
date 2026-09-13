@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#251b10">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/img/app-icon-180.png">
+<title>Age of Pixel</title>
+<link rel="stylesheet" href="assets/css/game.css?v=20260912-13">
+</head>
+<body>
+<div class="rotate-notice" id="rotateNotice">
+  <div><span>↻</span><h2>Rotate to Landscape</h2><p>The battlefield is designed for landscape mode.</p><button type="button" id="landscapeBtn">Open Landscape</button></div>
+</div>
+<header class="topbar">
+  <div class="brand"><img class="crest" src="assets/img/crest.png" alt="Age of Pixel crest"><div><h1 class="game-title">Age of Pixel</h1></div></div>
+  <div class="resources">
+    <div><span>◉</span><b id="gold">120</b><small>Gold</small></div>
+    <div><span>♟</span><b id="population">4/12</b><small>Army</small></div>
+    <div><span>⌛</span><b id="turnNo">1</b><small>Turn</small></div>
+  </div>
+  <div class="turn-actions">
+    <button type="button" class="panel-open" id="openSelectionBtn" aria-label="Open selection panel"><span>⚔</span> Selection</button>
+    <button type="button" class="panel-open" id="openInfoBtn" aria-label="Open game information"><span>ⓘ</span> Info</button>
+    <button id="endTurn" class="end-turn">End turn ›</button>
+    <a class="back-link" href="#" id="mainMenuBtn">‹ Menu</a>
+  </div>
+</header>
+<main class="game-stage">
+  <section class="battle">
+    <div class="map-controls" aria-label="Map zoom controls">
+      <button type="button" id="zoomOutBtn" aria-label="Zoom out">−</button>
+      <output id="zoomLevel" aria-live="polite">100%</output>
+      <button type="button" id="zoomInBtn" aria-label="Zoom in">+</button>
+    </div>
+    <div class="map-frame"><div class="map-canvas"><div id="board" role="grid" aria-label="Battle map"></div></div></div>
+  </section>
+  <div class="command-shade" id="commandShade" hidden></div>
+  <aside class="command" id="commandPanel" aria-label="Game panel">
+    <button type="button" class="command-close" id="commandClose" aria-label="Close panel">×</button>
+    <div class="tabs">
+      <button class="tab active" data-tab="selection">Selection</button>
+      <button class="tab" data-tab="codex">Info</button>
+    </div>
+    <section id="selectionPanel">
+      <div class="empty-select" id="emptySelect"><span>⚔</span><b>No unit selected</b><p>Select a troop or building on the map.</p></div>
+      <div id="details" hidden>
+        <div class="portrait" id="portrait"></div>
+        <div class="entity-title"><div><h2 id="entityName"></h2><span id="entityKind"></span></div><span class="level">Lv. 1</span></div>
+        <div class="health"><div><span>Health</span><b id="hpText"></b></div><div class="bar"><i id="hpBar"></i></div></div>
+        <div class="stats" id="stats"></div>
+        <div class="action-title">Orders</div>
+        <div class="action-grid" id="actions"></div>
+      </div>
+    </section>
+    <section id="codexPanel" hidden><h2>Game Info</h2><div id="codex"></div></section>
+    <div class="battle-log"><b>Battle chronicle</b><p id="log">Your banner rises over Riverwatch.</p></div>
+  </aside>
+</main>
+<div class="modal" id="modal" hidden>
+  <div class="modal-card">
+    <button class="close" id="closeModal">×</button>
+    <h2 id="modalTitle"></h2>
+    <p id="modalText"></p>
+    <div id="modalChoices" class="choice-grid"></div>
+  </div>
+</div>
+<div class="menu-scroll-backdrop" id="menuScroll" hidden>
+  <div class="menu-scroll" role="dialog" aria-modal="true" aria-labelledby="menuScrollTitle">
+    <div class="menu-scroll-rod"></div>
+    <div class="menu-scroll-paper">
+      <button class="menu-scroll-close" id="menuScrollClose" aria-label="Close">×</button>
+      <span class="menu-scroll-seal">✦</span>
+      <div id="battleMenuHome">
+        <h2 id="menuScrollTitle">Battle Menu</h2>
+        <p>Resume the battle, adjust your options, or quit this match.</p>
+        <div class="menu-scroll-actions menu-scroll-actions-3">
+          <button type="button" id="continueBattleBtn">Resume Game</button>
+          <button type="button" id="battleOptionsBtn">Options</button>
+          <button type="button" class="quit-current-game" id="quitCurrentGameBtn">Quit Game</button>
+        </div>
+      </div>
+      <div id="battleMenuOptions" class="battle-options-scroll" hidden>
+        <h2>Options</h2>
+        <div data-game-options></div>
+        <button type="button" class="battle-options-back" id="battleOptionsBack">‹ Back to Battle Menu</button>
+      </div>
+    </div>
+    <div class="menu-scroll-rod"></div>
+  </div>
+</div>
+<div class="menu-scroll-backdrop" id="endTurnScroll" hidden>
+  <div class="menu-scroll" role="dialog" aria-modal="true" aria-labelledby="endTurnScrollTitle">
+    <div class="menu-scroll-rod"></div>
+    <div class="menu-scroll-paper">
+      <button class="menu-scroll-close" id="endTurnScrollClose" aria-label="Close">×</button>
+      <span class="menu-scroll-seal">⌛</span>
+      <h2 id="endTurnScrollTitle">End This Turn?</h2>
+      <p>Your remaining units will lose any unused actions, then the next side will move.</p>
+      <div class="menu-scroll-actions">
+        <button type="button" id="continueTurnBtn">Continue Playing</button>
+        <button type="button" class="confirm-end-turn" id="confirmEndTurnBtn">End Turn</button>
+      </div>
+    </div>
+    <div class="menu-scroll-rod"></div>
+  </div>
+</div>
+<script src="assets/js/app.js?v=20260913-pwa1"></script>
+<script src="assets/js/guard.js?v=20260912-5"></script>
+<script src="assets/js/options.js?v=20260913-content1"></script>
+<script src="assets/js/game.js?v=20260913-content1"></script>
+</body>
+</html>

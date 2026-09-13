@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2b1b0d"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/img/app-icon-180.png">
+<title>Admin Editor · Age of Pixel</title>
+<link rel="stylesheet" href="assets/css/admin.css?v=20260913-tabsfix1">
+</head>
+<body>
+<header><div><b>Age of Pixel</b><span>Admin Editor</span></div><a href="dashboard.html">Main Menu</a></header>
+<main>
+  <nav class="admin-tabs"><button class="active" data-view="units">Troops &amp; Units</button><button data-view="buildings">Buildings</button><button data-view="maps">Map Builder</button><button data-view="music">Theme Music</button></nav>
+  <section id="unitsView" class="admin-view">
+    <div class="editor-card">
+      <h1>Add or Edit Troop</h1>
+      <form id="unitForm">
+        <input type="hidden" id="unitId">
+        <label>Name<input id="unitName" required maxlength="30" placeholder="Giant"></label>
+        <label>Type<select id="unitKind"><option>Infantry</option><option>Ranged troop</option><option>Cavalry</option><option>Siege</option><option>Civilian</option></select></label>
+        <div class="number-grid">
+          <label>Health<input id="unitHp" type="number" min="1" max="999" value="20" required></label>
+          <label>Attack<input id="unitAttack" type="number" min="0" max="999" value="6" required></label>
+          <label>Move<input id="unitMove" type="number" min="1" max="20" value="2" required></label>
+          <label>Range<input id="unitRange" type="number" min="1" max="20" value="1" required></label>
+          <label>Gold cost<input id="unitCost" type="number" min="0" max="9999" value="80" required></label>
+        </div>
+        <label>Description<textarea id="unitDescription" maxlength="160" placeholder="Heavy frontline unit."></textarea></label>
+        <label>PNG icon (optional)<input id="unitIcon" type="file" accept="image/png"></label>
+        <p class="file-note" id="unitFileNote">Without a PNG, the system creates a generated filename such as <b>giant.gif</b>.</p>
+        <div class="form-actions"><button type="button" class="secondary" id="cancelUnitEdit" hidden>Cancel Edit</button><button type="submit">Save Troop</button></div>
+      </form>
+    </div>
+    <div class="list-card"><h2>Game Troops &amp; Units</h2><div id="unitList" class="item-list"></div></div>
+  </section>
+  <section id="buildingsView" class="admin-view" hidden>
+    <div class="editor-card">
+      <h1>Add or Edit Building</h1>
+      <form id="buildingForm">
+        <input type="hidden" id="buildingId">
+        <label>Name<input id="buildingName" required maxlength="30" placeholder="Guard Tower"></label>
+        <label>Building ability<select id="buildingRole"><option value="attack">Attack tower</option><option value="train">Training building</option><option value="income">Gold / income building</option><option value="farm">Farm / army capacity</option><option value="none">Defensive / no action</option></select></label>
+        <div class="number-grid building-number-grid">
+          <label>Health<input id="buildingHp" type="number" min="1" max="9999" value="30" required></label>
+          <label>Gold cost<input id="buildingCost" type="number" min="0" max="9999" value="100" required></label>
+          <label data-building-stat="attack">Damage<input id="buildingAttack" type="number" min="0" max="999" value="5"></label>
+          <label data-building-stat="attack">Attack range<input id="buildingRange" type="number" min="1" max="20" value="3"></label>
+          <label data-building-stat="income">Gold / turn<input id="buildingIncome" type="number" min="0" max="9999" value="20"></label>
+          <label data-building-stat="farm">Extra army limit<input id="buildingCapacity" type="number" min="0" max="999" value="4"></label>
+        </div>
+        <fieldset class="train-picker" id="buildingTrainPicker"><legend>Troops this building can train</legend><div id="trainUnitChoices"></div></fieldset>
+        <label>Description<textarea id="buildingDescription" maxlength="160" placeholder="Protects nearby land or supports your kingdom."></textarea></label>
+        <label>PNG icon (optional)<input id="buildingIcon" type="file" accept="image/png"></label>
+        <p class="file-note" id="buildingFileNote">Upload a PNG icon. Without one, the generated filename uses the building name.</p>
+        <div class="form-actions"><button type="button" class="secondary" id="cancelBuildingEdit" hidden>Cancel Edit</button><button type="submit">Save Building</button></div>
+      </form>
+    </div>
+    <div class="list-card"><h2>Game Buildings</h2><div id="buildingList" class="item-list"></div></div>
+  </section>
+  <section id="mapsView" class="admin-view" hidden>
+    <div class="editor-card map-editor-card">
+      <h1>Map Builder</h1>
+      <form id="mapForm">
+        <input type="hidden" id="mapId">
+        <label>Map name<input id="mapName" required maxlength="36" placeholder="Dragon Coast"></label>
+        <div class="terrain-palette" id="terrainPalette" aria-label="Terrain tools">
+          <button type="button" class="active" data-terrain="grass"><span>▧</span>Grass</button>
+          <button type="button" data-terrain="water"><span>≈</span>Water</button>
+          <button type="button" data-terrain="forest"><span>♣</span>Trees</button>
+          <button type="button" data-terrain="hill"><span>▲</span>Hill</button>
+          <button type="button" data-terrain="road"><span>═</span>Road</button>
+        </div>
+        <p class="file-note">Choose a terrain icon, then tap cells to paint the 12×9 base map. Match size can still scale it from Small to Biggest.</p>
+        <div id="mapCanvas" class="map-canvas" role="grid" aria-label="Map terrain editor"></div>
+        <div class="form-actions"><button type="button" class="secondary" id="clearMap">Clear</button><button type="button" class="secondary" id="cancelMapEdit" hidden>Cancel Edit</button><button type="submit">Save Map</button></div>
+      </form>
+    </div>
+    <div class="list-card"><h2>Game Maps</h2><div id="mapList" class="item-list"></div></div>
+  </section>
+  <section id="musicView" class="admin-view" hidden>
+    <div class="editor-card">
+      <h1>Add Theme Music</h1>
+      <form id="musicForm">
+        <label>Track name<input id="musicName" required maxlength="50" placeholder="Kingdom March"></label>
+        <label>MP3, OGG, or WAV file<input id="musicFile" type="file" accept="audio/mpeg,audio/ogg,audio/wav" required></label>
+        <p class="file-note">Enabled tracks play in random order. Pause a track to keep it out of the random playlist.</p>
+        <div class="form-actions"><button type="submit">Add Music</button></div>
+      </form>
+    </div>
+    <div class="list-card"><h2>Theme Playlist</h2><div id="musicList" class="item-list"></div></div>
+  </section>
+</main>
+<script src="assets/js/app.js?v=20260913-pwa1"></script><script src="assets/js/admin.js?v=20260913-content1"></script>
+</body></html>
