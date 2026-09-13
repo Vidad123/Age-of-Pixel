@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#1B130B">
+    <WebView android:id="@+id/gameWebView" android:layout_width="match_parent" android:layout_height="match_parent" />
+    <LinearLayout android:id="@+id/offlinePanel" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical" android:padding="32dp" android:visibility="gone">
+        <ImageView android:layout_width="160dp" android:layout_height="160dp" android:contentDescription="Age of Pixel" android:src="@mipmap/ic_launcher" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="The kingdom is offline" android:textColor="#F6C453" android:textSize="24sp" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center" android:text="Connect to the internet to load Age of Pixel." android:textColor="#EEDFB8" android:textSize="16sp" />
+        <Button android:id="@+id/retryButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="Try Again" />
+    </LinearLayout>
+</FrameLayout>
