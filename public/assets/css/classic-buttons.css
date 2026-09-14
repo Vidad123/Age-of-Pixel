@@ -1,0 +1,113 @@
+:root{
+  --classic-gold:#d6a33f;
+  --classic-gold-light:#f3d485;
+  --classic-gold-dark:#75501f;
+  --classic-wood:#4a2815;
+  --classic-wood-deep:#211108;
+  --classic-parchment:#ead49d;
+}
+
+/* Shared carved-wood buttons. Map tiles and circular utility controls keep their specialized shapes. */
+button:not(.tile):not(.map-cell):not(.quick-build):not(.round-tool):not(.command-close):not(.scroll-close):not(.menu-scroll-close):not(.close),
+a.menu-btn,
+a.page-back,
+a.back-link,
+a.friend-search-open,
+.saved-actions a{
+  border:2px solid var(--classic-gold)!important;
+  border-radius:3px!important;
+  color:#fff0c2!important;
+  background:
+    linear-gradient(90deg,transparent 0 7px,#ffffff09 7px 8px,transparent 8px calc(100% - 8px),#00000025 calc(100% - 8px) calc(100% - 7px),transparent calc(100% - 7px)),
+    repeating-linear-gradient(0deg,#0000000b 0 1px,transparent 1px 4px),
+    linear-gradient(#6b3b1d 0%,#452311 48%,#2a160b 52%,#3a1d0e 100%)!important;
+  box-shadow:
+    inset 0 1px 0 var(--classic-gold-light),
+    inset 0 -3px 0 #150a05,
+    inset 3px 0 0 #ffffff08,
+    inset -3px 0 0 #00000028,
+    0 3px 0 #110904,
+    0 5px 10px #0008!important;
+  text-shadow:0 2px 1px #120904,1px 0 0 #120904!important;
+  letter-spacing:.035em;
+  transition:filter .14s ease,transform .1s ease,box-shadow .1s ease!important;
+}
+
+button:not(.tile):not(.map-cell):not(.quick-build):not(.round-tool):not(.command-close):not(.scroll-close):not(.menu-scroll-close):not(.close):hover,
+a.menu-btn:hover,
+a.page-back:hover,
+a.back-link:hover,
+a.friend-search-open:hover,
+.saved-actions a:hover{
+  filter:brightness(1.17) saturate(1.08)!important;
+  transform:translateY(-1px);
+}
+
+button:not(.tile):not(.map-cell):not(.quick-build):not(.round-tool):not(.command-close):not(.scroll-close):not(.menu-scroll-close):not(.close):active,
+a.menu-btn:active,
+a.page-back:active,
+a.back-link:active,
+a.friend-search-open:active,
+.saved-actions a:active{
+  transform:translateY(2px)!important;
+  box-shadow:inset 0 2px 5px #0009,inset 0 -1px 0 #d4a14a,0 1px 0 #110904!important;
+}
+
+button:focus-visible,
+a.menu-btn:focus-visible,
+a.page-back:focus-visible,
+a.back-link:focus-visible{
+  outline:3px solid #fff0a8!important;
+  outline-offset:3px!important;
+}
+
+button:disabled,
+.menu-btn.disabled{
+  color:#a99b7e!important;
+  border-color:#716042!important;
+  filter:grayscale(.6) brightness(.72)!important;
+  box-shadow:inset 0 1px #ffffff12,0 2px 4px #0006!important;
+  transform:none!important;
+}
+
+/* Parchment-style secondary actions. */
+button.secondary,
+.social-actions button:not(.danger),
+.saved-actions button:not(.danger),
+.battle-options-back{
+  color:#3b250f!important;
+  background:
+    repeating-linear-gradient(0deg,#00000008 0 1px,transparent 1px 4px),
+    linear-gradient(#f5e5b8,#c9a867)!important;
+  border-color:#91672c!important;
+  text-shadow:0 1px #fff2c8!important;
+  box-shadow:inset 0 1px #fff7d6,inset 0 -3px #8b672e,0 3px 6px #0005!important;
+}
+
+button.delete,
+button.danger,
+.logout-tool,
+.quit-current-game,
+.confirm-end-turn,
+.option-danger button{
+  border-color:#c67a4b!important;
+  background:repeating-linear-gradient(0deg,#0001 0 1px,transparent 1px 4px),linear-gradient(#792f22,#3b140f)!important;
+  color:#ffe0c9!important;
+}
+
+/* Dashboard utility controls use a medieval coin-and-wood treatment. */
+.round-tool{
+  border:2px solid var(--classic-gold)!important;
+  border-radius:50%!important;
+  color:#ffe6a2!important;
+  background:radial-gradient(circle at 35% 28%,#704521,#321a0d 65%,#170b06)!important;
+  box-shadow:inset 0 2px #f3d48577,inset 0 -3px #120804,0 3px 8px #0009!important;
+  text-shadow:0 2px 1px #120904!important;
+}
+.round-tool:hover{filter:brightness(1.18);transform:translateY(-1px)}
+.round-tool:active{transform:translateY(1px)}
+.profile-chip{border-color:#b88332!important;background:linear-gradient(100deg,#2d190df2,#140b06d9)!important;box-shadow:inset 0 1px #e7bd6560,0 3px 10px #0009!important}
+
+@media(max-width:700px){
+  button:not(.tile):not(.map-cell):not(.quick-build):not(.round-tool):not(.command-close):not(.scroll-close):not(.menu-scroll-close):not(.close),a.menu-btn,a.page-back,a.back-link{box-shadow:inset 0 1px #f3d48588,inset 0 -2px #150a05,0 2px 5px #0008!important}
+}

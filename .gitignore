@@ -1,0 +1,4 @@
+src/config.local.php
+android-app/.gradle/
+android-app/**/build/
+*.apk

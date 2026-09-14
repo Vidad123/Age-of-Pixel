@@ -1,0 +1,8 @@
+document.addEventListener('DOMContentLoaded', async () => {
+  const user=await requireSession(); if(!user)return;
+  const list=document.querySelector('#savedGamesList'); let active=null;try{active=JSON.parse(localStorage.getItem('ageofpixel-active-match')||'null');}catch(e){}
+  function render(){const saves=Object.keys(localStorage).filter(k=>k.startsWith('ageofpixel-game-')).map(key=>{try{const data=JSON.parse(localStorage.getItem(key)||'null');if(!data)return null;const raw=data.url||(active?.saveKey===key?active.url:'');let url='';try{const parsed=new URL(raw,location.href);if(parsed.origin===location.origin&&/\/play\.html$/.test(parsed.pathname))url=parsed.href;}catch(e){}return{key,data,url,name:data.mapName||(active?.saveKey===key?active.mapName:'Saved Battle')};}catch(e){return null;}}).filter(Boolean).sort((a,b)=>(b.data.updatedAt||0)-(a.data.updatedAt||0));
+    list.innerHTML=saves.length?saves.map((s,i)=>`<article class="saved-card" data-index="${i}"><span><b>${escapeHtml(s.name)}</b><small>Turn ${Number(s.data.turn)||1}${s.data.campaignWave?' · Wave '+Number(s.data.campaignWave):''}</small></span><span class="saved-actions">${s.url?`<a href="${escapeHtml(s.url)}">Resume</a>`:'<button disabled>Unavailable</button>'}<button class="danger" data-delete>Delete</button></span></article>`).join(''):'<div class="empty-state">No saved games yet. Start a battle first.</div>';
+    list.querySelectorAll('[data-delete]').forEach((b,i)=>b.onclick=()=>{const s=saves[i];if(!confirm(`Delete “${s.name}”?`))return;localStorage.removeItem(s.key);if(active?.saveKey===s.key)localStorage.removeItem('ageofpixel-active-match');render();});}
+  render();document.body.classList.add('auth-ready');
+});

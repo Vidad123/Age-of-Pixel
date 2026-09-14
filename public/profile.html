@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Profile · Age of Pixel</title><link rel="stylesheet" href="assets/css/pages.css"><link rel="stylesheet" href="assets/css/pages-plain.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></head><body>
+<a class="page-back" href="dashboard.html">‹ Back</a>
+<main class="page-shell"><h1 class="page-title">Commander Profile</h1><p class="page-subtitle">Choose how other players see you.</p>
+  <section class="page-section profile-head"><span class="page-avatar" id="profileAvatar">?</span><span><b id="profileUsername">...</b><small>Age of Pixel commander</small></span></section>
+  <form id="profileForm" class="page-section page-form">
+    <label>Display name<input id="profileDisplayName" maxlength="32" required></label>
+    <label>Battle motto<textarea id="profileBio" maxlength="160" rows="3" placeholder="A short message for your allies."></textarea></label>
+    <label>Banner color<input id="profileColor" type="color" value="#9b672e"></label>
+    <button class="primary-action" type="submit">Save Profile</button><p class="status" id="profileStatus"></p>
+  </form>
+</main><div class="rotate-guard"><div><span>↻</span><b>Rotate your device</b><p>Age of Pixel uses landscape mode.</p></div></div>
+<script src="assets/js/app.js"></script><script src="assets/js/profile.js"></script></body></html>

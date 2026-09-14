@@ -1,0 +1,14 @@
+/* Keep the Back control and social navigation clear of landscape phone cutouts. */
+.friends-page .social-page-sidebar .page-back{position:static!important;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:34px!important;min-height:34px!important;margin:0 0 7px!important;padding:4px 6px!important;border-width:1px!important;border-radius:3px!important;font-size:10px!important;line-height:1!important;box-shadow:0 2px 5px #0008!important}
+.friends-page .chat-action{display:inline-grid;place-items:center;padding:6px 9px;border:1px solid #477aa1;border-radius:2px;color:#eef8ff;background:linear-gradient(#39749d,#183f60);font-weight:bold;text-decoration:none;box-shadow:inset 0 1px #ffffff35}
+@media (orientation:landscape) and (pointer:coarse){
+  body.friends-page{padding:0!important}
+  .friends-page .page-shell{position:fixed;inset:0;width:100%!important;height:100dvh!important;max-height:none!important;margin:0!important;border-width:0!important}
+  .friends-page .social-page-sidebar .page-back{height:27px!important;min-height:27px!important;margin-bottom:4px!important;padding:2px 4px!important;font-size:8px!important}
+  .social-page-sidebar{padding-top:5px!important;padding-left:max(4px,env(safe-area-inset-left))!important}
+  .social-page-sidebar h2{display:none!important}
+  .social-page-sidebar button{min-height:28px!important;height:28px!important;padding:2px 4px!important;border-width:1px!important}
+  .friends-page .chat-action{padding:4px 6px;font-size:8px}
+  .social-page-content{min-width:0!important;overflow-x:hidden!important}
+  .social-page-content .page-title{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}

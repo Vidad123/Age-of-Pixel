@@ -3,6 +3,17 @@
  * JSON API, and guarding pages that require a signed-in session.
  */
 
+// Load the shared classic-medieval button skin after each page's own styles.
+(() => {
+  if (document.querySelector('link[data-classic-buttons]')) return;
+  const source = document.currentScript?.src;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.dataset.classicButtons = 'true';
+  link.href = source ? new URL('../css/classic-buttons.css', source).href : 'assets/css/classic-buttons.css';
+  document.head.append(link);
+})();
+
 function readCookie(name) {
   const match = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
   return match ? decodeURIComponent(match[1]) : null;
@@ -246,56 +257,3 @@ const AOPAudio = (() => {
 window.AOPSettings = { get: getGameSettings, save: saveGameSettings, defaults: AOP_DEFAULT_SETTINGS };
 window.AOPAudio = AOPAudio;
 applyGameSettings();
-
-// Floating music switch shared by the login, registration, and dashboard screens.
-function installMusicToggle() {
-  if (!/(?:^|\/)(?:dashboard|login|register)(?:\.html)?$/.test(location.pathname) || document.querySelector('#globalMusicToggle')) return;
-  const style = document.createElement('style');
-  style.textContent = `.global-music-toggle{position:fixed;left:18px;bottom:18px;z-index:90;width:48px;height:48px;border:3px ridge #d89c35;border-radius:50%;display:grid;place-items:center;padding:0;background:radial-gradient(circle at 35% 28%,#41617d,#17283a 62%,#09131e);color:#ffd66e;font:bold 24px/1 Georgia,serif;cursor:pointer;box-shadow:inset 0 2px #fff4,0 5px 13px #000b;text-shadow:0 2px 2px #000;transition:transform .14s,filter .14s}.global-music-toggle:hover{filter:brightness(1.2);transform:translateY(-2px)}.global-music-toggle:active{transform:translateY(1px)}.global-music-toggle.music-off{color:#9d9380;filter:saturate(.3)}.global-music-toggle.music-off::after{content:'';position:absolute;width:32px;height:3px;background:#c7493d;transform:rotate(-42deg);box-shadow:0 1px #2b0b08}.global-music-toggle:focus-visible{outline:3px solid #fff0b1;outline-offset:4px}@media(max-width:600px){.global-music-toggle{left:12px;bottom:12px;width:42px;height:42px;font-size:21px}}`;
-  document.head.append(style);
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.id = 'globalMusicToggle';
-  button.className = 'global-music-toggle';
-  button.innerHTML = '<span aria-hidden="true">♫</span>';
-  const refresh = () => {
-    const enabled = Boolean(getGameSettings().musicEnabled);
-    button.classList.toggle('music-off', !enabled);
-    button.setAttribute('aria-pressed', String(enabled));
-    button.setAttribute('aria-label', enabled ? 'Turn background music off' : 'Turn background music on');
-    button.title = enabled ? 'Music: On' : 'Music: Off';
-  };
-  button.addEventListener('click', () => {
-    const enabled = !getGameSettings().musicEnabled;
-    saveGameSettings({ musicEnabled: enabled });
-    if (enabled) AOPAudio.unlock();
-    refresh();
-  });
-  window.addEventListener('aop-settings-changed', refresh);
-  refresh();
-  document.body.append(button);
-}
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installMusicToggle); else installMusicToggle();
-
-// Installable PWA support. The button appears on entry screens when the app is not installed.
-let deferredInstallPrompt = null;
-window.addEventListener('beforeinstallprompt', event => { event.preventDefault(); deferredInstallPrompt = event; document.querySelector('#installAopButton')?.removeAttribute('hidden'); });
-async function installAopApp() {
-  if (deferredInstallPrompt) {
-    deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
-    deferredInstallPrompt = null;
-    document.querySelector('#installAopButton')?.setAttribute('hidden','');
-    return;
-  }
-  const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  alert(isiOS ? 'To install: tap Share, then Add to Home Screen.' : 'Open your browser menu and choose Install app or Add to Home screen.');
-}
-function installPwaSupport() {
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('service-worker.js').catch(()=>{});
-  if (!/(?:^|\/)(?:dashboard|login|register)(?:\.html)?$/.test(location.pathname) || matchMedia('(display-mode: standalone)').matches || navigator.standalone) return;
-  const button=document.createElement('button');button.type='button';button.id='installAopButton';button.className='global-install-button';button.hidden=true;button.innerHTML='<span aria-hidden="true">⇩</span>';button.title='Install Age of Pixel';button.setAttribute('aria-label','Install Age of Pixel application');button.onclick=installAopApp;
-  const style=document.createElement('style');style.textContent='.global-install-button{position:fixed;left:78px;bottom:18px;z-index:90;width:48px;height:48px;border:3px ridge #d89c35;border-radius:50%;display:grid;place-items:center;padding:0;background:radial-gradient(circle at 35% 28%,#744927,#2d1b0d 68%,#140b05);color:#ffd66e;font:bold 27px/1 Georgia,serif;cursor:pointer;box-shadow:inset 0 2px #fff4,0 5px 13px #000b}.global-install-button:hover{filter:brightness(1.2);transform:translateY(-2px)}.global-install-button:focus-visible{outline:3px solid #fff0b1;outline-offset:4px}@media(max-width:600px){.global-install-button{left:64px;bottom:12px;width:42px;height:42px;font-size:23px}}';document.head.append(style);document.body.append(button);
-  if (deferredInstallPrompt || /iphone|ipad|ipod/i.test(navigator.userAgent)) button.hidden=false;
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installPwaSupport);else installPwaSupport();

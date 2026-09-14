@@ -8,6 +8,9 @@ SET time_zone = '+00:00';
 CREATE TABLE IF NOT EXISTS `users` (
     `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `username`      VARCHAR(32)  NOT NULL,
+    `display_name`  VARCHAR(32)  NULL DEFAULT NULL,
+    `bio`           VARCHAR(160) NOT NULL DEFAULT '',
+    `avatar_color`  CHAR(7) NOT NULL DEFAULT '#9b672e',
     `email`         VARCHAR(190) NOT NULL,
     `password_hash` VARCHAR(255) NOT NULL,
     `role`          ENUM('user','admin') NOT NULL DEFAULT 'user',
@@ -34,6 +37,32 @@ SET @aop_add_role = IF(
 PREPARE aop_statement FROM @aop_add_role;
 EXECUTE aop_statement;
 DEALLOCATE PREPARE aop_statement;
+
+SET @aop_has_display_name = (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND COLUMN_NAME = 'display_name');
+SET @aop_add_display_name = IF(@aop_has_display_name = 0, 'ALTER TABLE `users` ADD COLUMN `display_name` VARCHAR(32) NULL AFTER `username`', 'SELECT 1');
+PREPARE aop_statement FROM @aop_add_display_name; EXECUTE aop_statement; DEALLOCATE PREPARE aop_statement;
+SET @aop_has_bio = (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND COLUMN_NAME = 'bio');
+SET @aop_add_bio = IF(@aop_has_bio = 0, 'ALTER TABLE `users` ADD COLUMN `bio` VARCHAR(160) NOT NULL DEFAULT '''' AFTER `display_name`', 'SELECT 1');
+PREPARE aop_statement FROM @aop_add_bio; EXECUTE aop_statement; DEALLOCATE PREPARE aop_statement;
+SET @aop_has_avatar_color = (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND COLUMN_NAME = 'avatar_color');
+SET @aop_add_avatar_color = IF(@aop_has_avatar_color = 0, 'ALTER TABLE `users` ADD COLUMN `avatar_color` CHAR(7) NOT NULL DEFAULT ''#9b672e'' AFTER `bio`', 'SELECT 1');
+PREPARE aop_statement FROM @aop_add_avatar_color; EXECUTE aop_statement; DEALLOCATE PREPARE aop_statement;
+UPDATE `users` SET `display_name` = `username` WHERE `display_name` IS NULL OR `display_name` = '';
+
+CREATE TABLE IF NOT EXISTS `friendships` (
+    `user_low_id` INT UNSIGNED NOT NULL,
+    `user_high_id` INT UNSIGNED NOT NULL,
+    `requested_by` INT UNSIGNED NOT NULL,
+    `status` ENUM('pending','accepted') NOT NULL DEFAULT 'pending',
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`user_low_id`,`user_high_id`),
+    KEY `idx_friendships_requested_by` (`requested_by`),
+    KEY `idx_friendships_status` (`status`),
+    CONSTRAINT `fk_friendships_low` FOREIGN KEY (`user_low_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_friendships_high` FOREIGN KEY (`user_high_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_friendships_requester` FOREIGN KEY (`requested_by`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- The reserved username "admin" becomes an administrator if it already exists.
 UPDATE `users`
@@ -66,4 +95,18 @@ CREATE TABLE IF NOT EXISTS `multiplayer_players` (
     CONSTRAINT `fk_multiplayer_player_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Maps and custom troop definitions remain stored in the browser.
+CREATE TABLE IF NOT EXISTS `friend_messages` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `sender_id` INT UNSIGNED NOT NULL,
+    `recipient_id` INT UNSIGNED NOT NULL,
+    `message` VARCHAR(500) NOT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `idx_friend_messages_pair` (`sender_id`,`recipient_id`,`id`),
+    KEY `idx_friend_messages_recipient` (`recipient_id`,`id`),
+    CONSTRAINT `fk_friend_messages_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_friend_messages_recipient` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Maps and custom troop definitions remain stored in the browser. Profiles,
+-- friendships, and private friend messages are shared through the database.

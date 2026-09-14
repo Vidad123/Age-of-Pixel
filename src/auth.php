@@ -158,9 +158,9 @@ function register_user(string $username, string $email, string $password, string
     $admins = app_config()['app']['admin_users'] ?? ['admin'];
     $role = in_array(strtolower($username), array_map('strtolower', $admins), true) ? 'admin' : 'user';
     $stmt = $pdo->prepare(
-        'INSERT INTO users (username, email, password_hash, role) VALUES (:u, :e, :p, :r)'
+        'INSERT INTO users (username, display_name, email, password_hash, role) VALUES (:u, :u2, :e, :p, :r)'
     );
-    $stmt->execute(['u' => $username, 'e' => $email, 'p' => $hash, 'r' => $role]);
+    $stmt->execute(['u' => $username, 'u2' => $username, 'e' => $email, 'p' => $hash, 'r' => $role]);
 
     return ['ok' => true, 'errors' => []];
 }

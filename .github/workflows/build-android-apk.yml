@@ -25,8 +25,8 @@ jobs:
       - name: Build installable APK
         run: gradle assembleDebug
       - name: Give APK a friendly name
-        run: cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/Age-of-Pixel.apk
+        run: cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/Age-of-Pixel-v2.1.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: Age-of-Pixel-Android
-          path: android-app/app/build/outputs/apk/debug/Age-of-Pixel.apk
+          name: Age-of-Pixel-Android-v2.1
+          path: android-app/app/build/outputs/apk/debug/Age-of-Pixel-v2.1.apk

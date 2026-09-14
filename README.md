@@ -1,17 +1,5 @@
 # Age of Pixel
 
-## Match modes
-
-- **Single Player** keeps the original human-versus-AI battle.
-- **Local Match** is two-player hot-seat play on one device. Blue moves first, then a pass-device screen protects the next player's turn.
-- **Multiplayer** creates a six-character online room for two signed-in accounts. The host shares the room code, the second player joins it, and the server synchronizes moves, attacks, construction, training, and turn ownership.
-
-For an existing database, import `database/migrations/002_multiplayer.sql`. For a fresh HostForge database, import `database/hostforge_import.sql` instead.
-
-## Install as an app
-
-Age of Pixel is configured as a Progressive Web App. On HostForge (HTTPS), open the Login, Register, or Dashboard page and use the round install button when available. On iPhone or iPad, use Safari’s Share menu and choose **Add to Home Screen**. Login and multiplayer still require a server connection.
-
 An original browser-based medieval turn strategy prototype with a Warcraft
 III–style main menu, account login, a static HTML/CSS/JS front end, and a
 PHP/MySQL JSON API backend.
@@ -158,3 +146,85 @@ PNG.
 - Training, construction, income, movement, combat, enemy turns, and win/loss states
 - Responsive HTML/CSS/JavaScript interface
 - `api/status.php` JSON status endpoint (also reports whether the caller is signed in)
+
+## v2.1 profiles, friends, and landscape lobby
+
+- The dashboard now uses a wide kingdom-lobby layout with the player profile
+  at top-left, settings and social controls at top-right, a friends preview on
+  the right, a featured battle action in the center, and compact modes along
+  the bottom.
+- Dashboard actions open dedicated full-screen pages instead of scroll popups.
+  Profile, friends, single-player setup, saved games, options, and credits all
+  include a Back button at the top-left.
+- Profiles support a display name, battle motto, and banner color.
+- Players can search by username/display name, send requests, accept or decline
+  requests, and remove friends. These records are stored in MariaDB.
+- For an existing localhost or HostForge database, import
+  `database/migrations/003_profiles_friends.sql` once. Fresh installations may
+  use `database/schema.sql`; HostForge may use `database/hostforge_import.sql`.
+- Portrait phones receive a rotate prompt for the dashboard and battlefield.
+  The included Android wrapper is locked to sensor-landscape mode.
+- The Android APK source is under `android-app/`. GitHub Actions builds v2.2
+  through `.github/workflows/build-android-apk.yml`.
+
+## v2.2 restored complete feature set
+
+- Restores online room multiplayer and two-player local matches as dedicated
+  dashboard pages while retaining the v2.1 profile and friends system.
+- Restores continuous random background music, music and sound-effect options,
+  and custom admin theme tracks. Music is controlled from Options without a
+  floating screen button.
+- Restores the complete admin editor tabs for troops, buildings, maps, and
+  theme music, including edit/delete controls and per-track pause controls.
+- Restores custom buildings, maps, unit training, building actions, campaign
+  rules, saved games, and the full battlefield logic.
+- Existing databases should apply both `002_multiplayer.sql` and
+  `003_profiles_friends.sql`. Fresh installations can import `schema.sql`.
+
+## v2.3 classic medieval controls
+
+- Adds a shared carved-wood and aged-gold button theme throughout the web and
+  Android layouts, with parchment secondary actions and red danger controls.
+- Keeps the existing compact mobile sizing, dashboard arrangement, and map
+  interaction controls unchanged.
+
+### v2.3.1 full-screen parchment pages
+
+- Removes the dark outer background from profile, friends, setup, saved games,
+  multiplayer, local match, options, and credits pages.
+- Places the Back control visually inside the full-screen parchment surface.
+- Removes the old login-page night vignette that incorrectly dimmed Options.
+
+### v2.3.2 edge-to-edge dashboard
+
+- Makes the dashboard fill the entire desktop, mobile-browser, and Android
+  viewport without outer gutters or a rounded page frame.
+- Supports iPhone landscape display cutouts with `viewport-fit=cover`, while
+  keeping profile, friends, and menu controls inside safe touch areas.
+
+### v2.3.3 slimmer mobile dashboard bars
+
+- Reduces the mobile-landscape header from 56px to 46px and the bottom menu
+  from 66px to 52px, leaving more screen space for the kingdom scene.
+- Scales the profile card, logo, utility controls, mode icons, and labels
+  proportionally without changing desktop sizes.
+
+## v2.4 game-lobby friends roster
+
+- Redesigns the dashboard friends dock with framed avatars, presence markers,
+  commander tiers, star counts, row actions, and separated roster entries.
+- Adds dedicated bottom shortcuts for the friends list, player search, and
+  incoming requests, including a request-count badge.
+- Marks friends active when they signed in within the last 15 minutes.
+
+## v2.5 slim social navigation
+
+- The first dashboard social shortcut opens a dedicated Friends page with a slim Friends/Requests sidebar; incoming requests now live in that page.
+- The second shortcut opens a compact, translucent player-search popup on the dashboard. The redundant third shortcut was removed.
+- Makes the mobile-landscape header, friends roster, social shortcuts, and bottom game-mode controls thinner.
+
+## v2.6 private friend chat
+
+- Adds a Chat button to every accepted friend and a dedicated private conversation page.
+- Messages are restricted to accepted friends and stored in MariaDB.
+- Existing installations must import `database/migrations/004_friend_chat.sql` once before using chat.

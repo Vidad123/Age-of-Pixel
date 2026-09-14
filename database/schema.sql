@@ -9,6 +9,9 @@ USE AOP;
 CREATE TABLE IF NOT EXISTS users (
     id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username      VARCHAR(32)  NOT NULL UNIQUE,
+    display_name  VARCHAR(32)  NULL,
+    bio           VARCHAR(160) NOT NULL DEFAULT '',
+    avatar_color  CHAR(7) NOT NULL DEFAULT '#9b672e',
     email         VARCHAR(190) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     role          ENUM('user','admin') NOT NULL DEFAULT 'user',
@@ -38,4 +41,31 @@ CREATE TABLE IF NOT EXISTS multiplayer_players (
     PRIMARY KEY (match_id,user_id), UNIQUE KEY uq_multiplayer_slot (match_id,slot),
     FOREIGN KEY (match_id) REFERENCES multiplayer_matches(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS friendships (
+    user_low_id INT UNSIGNED NOT NULL,
+    user_high_id INT UNSIGNED NOT NULL,
+    requested_by INT UNSIGNED NOT NULL,
+    status ENUM('pending','accepted') NOT NULL DEFAULT 'pending',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_low_id,user_high_id),
+    KEY idx_friendships_requested_by (requested_by),
+    FOREIGN KEY (user_low_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_high_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (requested_by) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS friend_messages (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    sender_id INT UNSIGNED NOT NULL,
+    recipient_id INT UNSIGNED NOT NULL,
+    message VARCHAR(500) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_friend_messages_pair (sender_id, recipient_id, id),
+    KEY idx_friend_messages_recipient (recipient_id, id),
+    FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (recipient_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

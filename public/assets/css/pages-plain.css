@@ -1,0 +1,49 @@
+/* Dedicated pages are full-screen parchment. The animated scene remains dashboard-only. */
+html,body{
+  min-height:100%!important;
+  background:#e2ca91!important;
+  background-image:none!important;
+}
+body{
+  display:block!important;
+  min-height:100dvh!important;
+  padding:0!important;
+  overflow-x:hidden!important;
+  color:#332513!important;
+}
+
+/* auth.css supplies useful option controls, but its night vignette does not belong here. */
+body::before,body::after{display:none!important;content:none!important}
+
+.page-shell,
+.page-shell.options-card{
+  position:relative!important;
+  z-index:1!important;
+  width:100%!important;
+  max-width:none!important;
+  min-height:100dvh!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:82px max(24px,calc((100vw - 980px)/2)) 30px!important;
+  overflow:visible!important;
+  border:0!important;
+  box-shadow:none!important;
+  background:
+    radial-gradient(80% 55% at 50% 0%,#fff4cf99,transparent 72%),
+    repeating-linear-gradient(0deg,#5d3d1808 0 1px,transparent 1px 4px),
+    linear-gradient(135deg,#f3e4b8,#ddc184 58%,#d1ad68)!important;
+}
+
+/* The Back control now sits on the parchment instead of in a separate dark margin. */
+.page-back{
+  position:fixed!important;
+  z-index:30!important;
+  top:16px!important;
+  left:max(16px,calc((100vw - 980px)/2))!important;
+}
+
+@media(max-width:700px){
+  .page-shell,.page-shell.options-card{padding:66px 12px 18px!important}
+  .page-back{top:10px!important;left:10px!important}
+}
